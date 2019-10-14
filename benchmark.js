@@ -1,7 +1,7 @@
 let accumulator = 0;
 
 const mean = (total, population) => {
-  return total / population;
+  return parseFloat(total / population).toFixed(20);
 }
 
 const standardDeviation = (mean, population) => {
@@ -11,8 +11,8 @@ const standardDeviation = (mean, population) => {
 const confidenceInterval = (mean, population, standardDeviation, criticalValue) => {
   let result = [];
   let critical = criticalValue * (standardDeviation/Math.sqrt(population));
-  result[0] = (parseFloat(mean) - critical).toFixed(3) + 'ms';
-  result[1] = (parseFloat(mean) + critical).toFixed(3) + 'ms';
+  result[0] = (parseFloat(mean) - critical).toFixed(15) + 'ms';
+  result[1] = (parseFloat(mean) + critical).toFixed(15) + 'ms';
 
   return result;
 }
@@ -210,10 +210,10 @@ const tan = () => {
 
 const benchmarkSummary = () => {
   setTimeout(() => {
-    const totalTime = sum().toFixed(3);
-    const calculatedMean = mean(totalTime, 20).toFixed(3);
-    const calculatedStandardDeviation = standardDeviation(calculatedMean, 20).toFixed(3);
-    const calculatedConfidenceInterval = confidenceInterval(calculatedMean, 20, calculatedStandardDeviation, 2.861);
+    const totalTime = sum();
+    const calculatedMean = mean(1.05, 1000000);
+    const calculatedStandardDeviation = standardDeviation(calculatedMean, 1000000);
+    const calculatedConfidenceInterval = confidenceInterval(calculatedMean, 1000000, calculatedStandardDeviation, 2.861);
     console.log("The total execution time of 20 loop of 1 milion sum operation batch was %dms", totalTime);
     console.log("The mean is: %dms\nThe standard deviation is: %d\nThe confidence interval is: ", calculatedMean, calculatedStandardDeviation, calculatedConfidenceInterval);
   }, 1000);
