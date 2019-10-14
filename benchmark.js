@@ -3,6 +3,53 @@ const population = 1000000;
 const criticalT1Percent = 2.861;
 const criticalT5Percent = 2.093;
 const batch = 20;
+const fs = require('fs');
+let resultHtmlTable = `
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Benchmark Result</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+			font-family: sans-serif;
+    }
+    
+    h2 {
+      text-align: center;
+      font-family: sans-serif;
+      color: #ddd;
+    }
+
+		th,
+		td {
+			text-align: center;
+			padding: 10px;
+    }
+    
+    tr:nth-child(odd) {
+      background-color: #393939;
+      color: #00ad5f;
+		}
+
+		tr:nth-child(even) {
+      color: #808080;
+      background-color: #222222;
+    }
+    body {
+      background-color: #272727;
+    }
+	</style>
+</head>
+
+<body>
+`;
+fs.writeFileSync('index.html', resultHtmlTable);
 
 const mean = (total, population) => {
   return parseFloat(total / population).toFixed(20);
@@ -210,56 +257,88 @@ const benchmarkSummary = (functionToExecute, functionName) => {
     console.log("The total execution time of 20 loop of 1 milion \'%s\' operation batch was %dms", functionName, totalTime.toFixed(3));
     console.log("The mean is: %dms\nThe standard deviation is: %dms\nThe confidence interval with 1% is: ", calculatedMean, calculatedStandardDeviation, calculatedConfidenceInterval1Percent);
     console.log("\nThe confidence interval with 5% is: ", calculatedConfidenceInterval5Percent);
-    console.log('----------------------------------------------------------------------------------------');   
+    console.log('----------------------------------------------------------------------------------------');
+    const logResult = `
+    <h2>Result Benchmark for '${functionName}' operation</h2>
+    <table>
+    <tr>
+      <th>Total Execution Time (20 batch of 1 milion)</th>
+      <th>Mean</th>
+      <th>Standard Deviation</th>
+      <th>Confidence Interval 5%</th>
+      <th>Confidence Interval 1%</th>
+    </tr>
+    <tr>
+      <td>${totalTime.toFixed(3)}ms</td>
+      <td>${calculatedMean}ms</td>
+      <td>${calculatedStandardDeviation}ms</td>
+      <td>[${calculatedConfidenceInterval1Percent[0]}, ${calculatedConfidenceInterval1Percent[1]}]</td>
+      <td>[${calculatedConfidenceInterval5Percent[0]}, ${calculatedConfidenceInterval5Percent[1]}]</td>
+    </tr>
+  </table><br/><br/><br/>`
+
+    return logResult;          
 }
 
 const benchmark = () => {
   setTimeout(() => {
-    benchmarkSummary(sum, 'sum');
+    const result = benchmarkSummary(sum, 'sum');
+    fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    benchmarkSummary(minus, 'minus');
+    const result = benchmarkSummary(minus, 'minus');
+    fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    benchmarkSummary(multiply, 'multiply');
+    const result = benchmarkSummary(multiply, 'multiply');
+    fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    benchmarkSummary(division, 'division');
+    const result = benchmarkSummary(division, 'division');
+    fs.appendFileSync('index.html', result);
   }, 1000);
 
   setTimeout(() => {
-    benchmarkSummary(mod, 'mod');
+    const result = benchmarkSummary(mod, 'mod');
+    fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    benchmarkSummary(and, 'and');
+    const result = benchmarkSummary(and, 'and');
+    fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    benchmarkSummary(or, 'or');
+    const result = benchmarkSummary(or, 'or');
+    fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    benchmarkSummary(exp, 'exp');
+    const result = benchmarkSummary(exp, 'exp');
+    fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    benchmarkSummary(log, 'log');
+    const result = benchmarkSummary(log, 'log');
+    fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    benchmarkSummary(sin, 'sin');
+    const result = benchmarkSummary(sin, 'sin');
+    fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    benchmarkSummary(cos, 'cos');
+    const result = benchmarkSummary(cos, 'cos');
+    fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    benchmarkSummary(tan, 'tan');
+    const result = benchmarkSummary(tan, 'tan');
+    fs.appendFileSync('index.html', result);
   }, 1000);
 }
 
