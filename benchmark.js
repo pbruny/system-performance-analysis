@@ -1,4 +1,7 @@
 let accumulator = 0;
+const population = 1000000;
+const criticalT1Percent = 2.861;
+const criticalT5Percent = 2.093;
 
 const mean = (total, population) => {
   return parseFloat(total / population).toFixed(20);
@@ -22,12 +25,11 @@ const sum = () => {
 
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 1000000; j++){
+    for(let j = 1; j <= population; j++){
       accumulator = 1+1;
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
-    // console.log("The total execution time of sum function was: %ds %dms", endTime[0], endTime[1] / 1000000);
   }
 
   return totalExecutionTime;
@@ -38,12 +40,11 @@ const minus = () => {
 
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 1000000; j++){
+    for(let j = 1; j <= population; j++){
       accumulator = 2-1;
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
-    // console.log("The total execution time of minus function was: %ds %dms", endTime[0], endTime[1] / 1000000);
   }
 
   return totalExecutionTime;
@@ -54,12 +55,11 @@ const multiply = () => {
 
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 1000000; j++){
+    for(let j = 1; j <= population; j++){
       accumulator = 2*2;
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
-    // console.log("The total execution time of multiply function was: %ds %dms", endTime[0], endTime[1] / 1000000);
   }
 
   return totalExecutionTime;
@@ -70,12 +70,11 @@ const division = () => {
 
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 1000000; j++){
+    for(let j = 1; j <= population; j++){
       accumulator = 9/3;
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
-    // console.log("The total execution time of division function was: %ds %dms", endTime[0], endTime[1] / 1000000);
   }
 
   return totalExecutionTime;
@@ -85,12 +84,11 @@ const mod = () => {
   let totalExecutionTime = 0;
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 1000000; j++){
+    for(let j = 1; j <= population; j++){
       accumulator = 9%4;
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
-    // console.log("The total execution time of mod function was: %ds %dms", endTime[0], endTime[1] / 1000000);
   }
 
   return totalExecutionTime;
@@ -101,12 +99,11 @@ const and = () => {
 
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 1000000; j++){
+    for(let j = 1; j <= population; j++){
       accumulator = 1 && 1;
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
-    // console.log("The total execution time of and operator was: %ds %dms", endTime[0], endTime[1] / 1000000);
   }
 
   return totalExecutionTime;
@@ -117,12 +114,11 @@ const or = () => {
 
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 1000000; j++){
+    for(let j = 1; j <= population; j++){
       accumulator = 1 || 1;
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
-    // console.log("The total execution time of or operator was: %ds %dms", endTime[0], endTime[1] / 1000000);
   }
 
   return totalExecutionTime;
@@ -133,12 +129,11 @@ const exp = () => {
 
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 1000000; j++){
+    for(let j = 1; j <= population; j++){
       accumulator = Math.exp(20);
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
-    // console.log("The total execution time of exp function was: %ds %dms", endTime[0], endTime[1] / 1000000);
   }
 
   return totalExecutionTime;
@@ -149,12 +144,11 @@ const log = () => {
 
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 1000000; j++){
+    for(let j = 1; j <= population; j++){
       accumulator = Math.log(100);
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
-    // console.log("The total execution time of log function was: %ds %dms", endTime[0], endTime[1] / 1000000);
   }
 
   return totalExecutionTime;
@@ -165,12 +159,11 @@ const sin = () => {
 
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 1000000; j++){
+    for(let j = 1; j <= population; j++){
       accumulator = Math.sin(45);
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
-    // console.log("The total execution time of sin function was: %ds %dms", endTime[0], endTime[1] / 1000000);
   }
 
   return totalExecutionTime;
@@ -181,12 +174,11 @@ const cos = () => {
 
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 1000000; j++){
+    for(let j = 1; j <= population; j++){
       accumulator = Math.cos(45);
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
-    // console.log("The total execution time of cos function was: %ds %dms", endTime[0], endTime[1] / 1000000);
   }
 
   return totalExecutionTime;
@@ -197,12 +189,11 @@ const tan = () => {
 
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 1000000; j++){
+    for(let j = 1; j <= population; j++){
       accumulator = Math.tan(45);
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
-    // console.log("The total execution time of tan function was: %ds %dms", endTime[0], endTime[1] / 1000000);
   }
 
   return totalExecutionTime;
@@ -211,9 +202,9 @@ const tan = () => {
 const benchmarkSummary = () => {
   setTimeout(() => {
     const totalTime = sum();
-    const calculatedMean = mean(totalTime, 1000000);
-    const calculatedStandardDeviation = standardDeviation(calculatedMean, 1000000);
-    const calculatedConfidenceInterval = confidenceInterval(calculatedMean, 1000000, calculatedStandardDeviation, 2.861);
+    const calculatedMean = mean(totalTime, population);
+    const calculatedStandardDeviation = standardDeviation(calculatedMean, population);
+    const calculatedConfidenceInterval = confidenceInterval(calculatedMean, population, calculatedStandardDeviation, 2.861);
     console.log("The total execution time of 20 loop of 1 milion sum operation batch was %dms", totalTime.toFixed(3));
     console.log("The mean is: %dms\nThe standard deviation is: %d\nThe confidence interval is: ", calculatedMean, calculatedStandardDeviation, calculatedConfidenceInterval);
   }, 1000);
