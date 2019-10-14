@@ -8,10 +8,6 @@ const standardDeviation = (mean, population) => {
   return Math.sqrt((mean**2)/population);
 }
 
-const variance = (deviation) => {
-  return deviation**2
-}
-
 const confidenceInterval = (mean, population, standardDeviation, criticalValue) => {
   let result = [];
   let critical = criticalValue * (standardDeviation/Math.sqrt(population));
