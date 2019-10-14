@@ -1,5 +1,26 @@
 let accumulator = 0;
 
+const mean = (total, population) => {
+  return total / population;
+}
+
+const standardDeviation = (mean, population) => {
+  return Math.sqrt((mean**2)/population);
+}
+
+const variance = (deviation) => {
+  return deviation**2
+}
+
+const confidenceInterval = (mean, population, standardDeviation, criticalValue) => {
+  let result = [];
+  let critical = criticalValue * (standardDeviation/Math.sqrt(population));
+  result[0] = (parseFloat(mean) - critical).toFixed(3);
+  result[1] = (parseFloat(mean) + critical).toFixed(3);
+
+  return result;
+}
+
 const sum = () => {
   let totalExecutionTime = 0;
 
@@ -193,48 +214,53 @@ const tan = () => {
 
 const benchmarkSummary = () => {
   setTimeout(() => {
-    console.log("The total execution time of 20 loop of 1 milion sum operation batch was %dms", sum().toFixed(2));
+    const totalTime = sum().toFixed(3);
+    const calculatedMean = mean(totalTime, 20).toFixed(3);
+    const calculatedStandardDeviation = standardDeviation(calculatedMean, 20).toFixed(3);
+    const calculatedConfidenceInterval = confidenceInterval(calculatedMean, 20, calculatedStandardDeviation, 2.861);
+    console.log("The total execution time of 20 loop of 1 milion sum operation batch was %dms", totalTime);
+    console.log("The mean is: %d\nThe standard deviation is: %d\nThe confidence interval is: ", calculatedMean, calculatedStandardDeviation, calculatedConfidenceInterval);
   }, 1000);
   
-  setTimeout(() => {
-    console.log("The total execution time of 20 loop of 1 milion minus operation batch was %dms", minus().toFixed(2));
-  }, 1000);
+  // setTimeout(() => {
+  //   console.log("The total execution time of 20 loop of 1 milion minus operation batch was %dms", minus().toFixed(2));
+  // }, 1000);
   
-  setTimeout(() => {
-    console.log("The total execution time of 20 loop of 1 milion multiply operation batch was %dms", multiply().toFixed(2));
-  }, 1000);
+  // setTimeout(() => {
+  //   console.log("The total execution time of 20 loop of 1 milion multiply operation batch was %dms", multiply().toFixed(2));
+  // }, 1000);
   
-  setTimeout(() => {
-    console.log("The total execution time of 20 loop of 1 milion division operation batch was %dms", division().toFixed(2));
-  }, 1000);
+  // setTimeout(() => {
+  //   console.log("The total execution time of 20 loop of 1 milion division operation batch was %dms", division().toFixed(2));
+  // }, 1000);
   
-  setTimeout(() => {
-    console.log("The total execution time of 20 loop of 1 milion and operator batch was %dms", and().toFixed(2));
-  }, 1000);
+  // setTimeout(() => {
+  //   console.log("The total execution time of 20 loop of 1 milion and operator batch was %dms", and().toFixed(2));
+  // }, 1000);
   
-  setTimeout(() => {
-    console.log("The total execution time of 20 loop of 1 milion or operator batch was %dms", or().toFixed(2));
-  }, 1000);
+  // setTimeout(() => {
+  //   console.log("The total execution time of 20 loop of 1 milion or operator batch was %dms", or().toFixed(2));
+  // }, 1000);
   
-  setTimeout(() => {
-    console.log("The total execution time of 20 loop of 1 milion exp opreation batch was %dms", exp().toFixed(2));
-  }, 1000);
+  // setTimeout(() => {
+  //   console.log("The total execution time of 20 loop of 1 milion exp opreation batch was %dms", exp().toFixed(2));
+  // }, 1000);
   
-  setTimeout(() => {
-    console.log("The total execution time of 20 loop of 1 milion log operation batch was %dms", log().toFixed(2));
-  }, 1000);
+  // setTimeout(() => {
+  //   console.log("The total execution time of 20 loop of 1 milion log operation batch was %dms", log().toFixed(2));
+  // }, 1000);
   
-  setTimeout(() => {
-    console.log("The total execution time of 20 loop of 1 milion sin operation batch was %dms", sin().toFixed(2));
-  }, 1000);
+  // setTimeout(() => {
+  //   console.log("The total execution time of 20 loop of 1 milion sin operation batch was %dms", sin().toFixed(2));
+  // }, 1000);
   
-  setTimeout(() => {
-    console.log("The total execution time of 20 loop of 1 milion cos operation batch was %dms", cos().toFixed(2));
-  }, 1000);
+  // setTimeout(() => {
+  //   console.log("The total execution time of 20 loop of 1 milion cos operation batch was %dms", cos().toFixed(2));
+  // }, 1000);
   
-  setTimeout(() => {
-    console.log("The total execution time of 20 loop of 1 milion tan operation batch was %dms", tan().toFixed(2));
-  }, 1000);
+  // setTimeout(() => {
+  //   console.log("The total execution time of 20 loop of 1 milion tan operation batch was %dms", tan().toFixed(2));
+  // }, 1000);
 }
 
 benchmarkSummary();
