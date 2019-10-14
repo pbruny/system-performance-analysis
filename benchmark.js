@@ -259,7 +259,7 @@ const benchmarkSummary = (functionToExecute, functionName) => {
     console.log("\nThe confidence interval with 5% is: ", calculatedConfidenceInterval5Percent);
     console.log('----------------------------------------------------------------------------------------');
     const logResult = `
-    <h2>Result Benchmark for '${functionName}' operation</h2>
+    <h2>Result Benchmark for ' ${functionName} ' operation</h2>
     <table>
     <tr>
       <th>Total Execution Time (20 batch of 1 milion)</th>
@@ -282,27 +282,27 @@ const benchmarkSummary = (functionToExecute, functionName) => {
 
 const benchmark = () => {
   setTimeout(() => {
-    const result = benchmarkSummary(sum, 'sum');
+    const result = benchmarkSummary(sum, '+');
     fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    const result = benchmarkSummary(minus, 'minus');
+    const result = benchmarkSummary(minus, '-');
     fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    const result = benchmarkSummary(multiply, 'multiply');
+    const result = benchmarkSummary(multiply, '*');
     fs.appendFileSync('index.html', result);
   }, 1000);
   
   setTimeout(() => {
-    const result = benchmarkSummary(division, 'division');
+    const result = benchmarkSummary(division, '/');
     fs.appendFileSync('index.html', result);
   }, 1000);
 
   setTimeout(() => {
-    const result = benchmarkSummary(mod, 'mod');
+    const result = benchmarkSummary(mod, '%');
     fs.appendFileSync('index.html', result);
   }, 1000);
   
