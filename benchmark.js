@@ -211,10 +211,10 @@ const tan = () => {
 const benchmarkSummary = () => {
   setTimeout(() => {
     const totalTime = sum();
-    const calculatedMean = mean(1.05, 1000000);
+    const calculatedMean = mean(totalTime, 1000000);
     const calculatedStandardDeviation = standardDeviation(calculatedMean, 1000000);
     const calculatedConfidenceInterval = confidenceInterval(calculatedMean, 1000000, calculatedStandardDeviation, 2.861);
-    console.log("The total execution time of 20 loop of 1 milion sum operation batch was %dms", totalTime);
+    console.log("The total execution time of 20 loop of 1 milion sum operation batch was %dms", totalTime.toFixed(3));
     console.log("The mean is: %dms\nThe standard deviation is: %d\nThe confidence interval is: ", calculatedMean, calculatedStandardDeviation, calculatedConfidenceInterval);
   }, 1000);
   
