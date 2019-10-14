@@ -34,7 +34,7 @@ let resultHtmlTable = `
     
     tr:nth-child(odd) {
       background-color: #393939;
-      color: #00ad5f;
+      color: #ddd;
 		}
 
 		tr:nth-child(even) {
