@@ -133,7 +133,7 @@ const exp = () => {
 
   for(let i = 1; i <= 20; i++){
     const startTime = process.hrtime();
-    for(let j = 1; j <= 10000; j++){
+    for(let j = 1; j <= 1000000; j++){
       accumulator = Math.exp(20);
     }
     const endTime = process.hrtime(startTime);
