@@ -53,18 +53,18 @@ let resultHtmlTable = `
 fs.writeFileSync('index.html', resultHtmlTable);
 
 const mean = (total, population) => {
-  return parseFloat(total / population).toFixed(15);
+  return parseFloat(total / population).toFixed(4);
 }
 
 const standardDeviation = (mean, population) => {
-  return parseFloat(Math.sqrt((mean**2)/population)).toFixed(15);
+  return parseFloat(Math.sqrt((mean**2)/population)).toFixed(4);
 }
 
 const confidenceInterval = (mean, population, standardDeviation, criticalValue) => {
   let result = [];
   let critical = criticalValue * (standardDeviation/Math.sqrt(population));
-  result[0] = (parseFloat(mean) - critical).toFixed(15) + 'ms';
-  result[1] = (parseFloat(mean) + critical).toFixed(15) + 'ms';
+  result[0] = (parseFloat(mean) - critical).toFixed(4) + 'ms';
+  result[1] = (parseFloat(mean) + critical).toFixed(4) + 'ms';
 
   return result;
 }
@@ -250,10 +250,10 @@ const tan = () => {
 
 const benchmarkSummary = (functionToExecute, functionName) => {
     const totalTime = functionToExecute();
-    const calculatedMean = mean(totalTime, population);
-    const calculatedStandardDeviation = standardDeviation(calculatedMean, population);
-    const calculatedConfidenceInterval1Percent = confidenceInterval(calculatedMean, population, calculatedStandardDeviation, criticalT1Percent);
-    const calculatedConfidenceInterval5Percent = confidenceInterval(calculatedMean, population, calculatedStandardDeviation, criticalT5Percent);
+    const calculatedMean = mean(totalTime, batch);
+    const calculatedStandardDeviation = standardDeviation(calculatedMean, batch);
+    const calculatedConfidenceInterval1Percent = confidenceInterval(calculatedMean, batch, calculatedStandardDeviation, criticalT1Percent);
+    const calculatedConfidenceInterval5Percent = confidenceInterval(calculatedMean, batch, calculatedStandardDeviation, criticalT5Percent);
     console.log('\n----------------------------------------------------------------------------------------');
     console.log("The total execution time of 20 loop of 1 milion \'%s\' operation batch was %dms", functionName, totalTime.toFixed(3));
     console.log("The mean of each batch is: %dms\nThe standard deviation of each batch is: %dms\nThe confidence interval with 1% is: ", calculatedMean, calculatedStandardDeviation, calculatedConfidenceInterval1Percent);
