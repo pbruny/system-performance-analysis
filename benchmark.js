@@ -148,7 +148,7 @@ const and = () => {
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
     for(let j = 1; j <= population; j++){
-      accumulator = 1 && 1;
+      accumulator = i && j;
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
@@ -163,7 +163,7 @@ const or = () => {
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
     for(let j = 1; j <= population; j++){
-      accumulator = 1 || 1;
+      accumulator = i || j;
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime += (endTime[1] / 1000000);
@@ -255,14 +255,14 @@ const benchmarkSummary = (functionToExecute, functionName) => {
     const calculatedConfidenceInterval5Percent = confidenceInterval(calculatedMean, population, calculatedStandardDeviation, criticalT5Percent);
     console.log('\n----------------------------------------------------------------------------------------');
     console.log("The total execution time of 20 loop of 1 milion \'%s\' operation batch was %dms", functionName, totalTime.toFixed(3));
-    console.log("The mean is: %dms\nThe standard deviation is: %dms\nThe confidence interval with 1% is: ", calculatedMean, calculatedStandardDeviation, calculatedConfidenceInterval1Percent);
+    console.log("The mean of each batch is: %dms\nThe standard deviation of each batch is: %dms\nThe confidence interval with 1% is: ", calculatedMean, calculatedStandardDeviation, calculatedConfidenceInterval1Percent);
     console.log("\nThe confidence interval with 5% is: ", calculatedConfidenceInterval5Percent);
     console.log('----------------------------------------------------------------------------------------');
     const logResult = `
-    <h2>Result Benchmark for ' ${functionName} ' operation</h2>
+    <h2>Result Benchmark for ' ${functionName} ' operation of each execution batch</h2>
     <table>
     <tr>
-      <th>Total Execution Time (20 batch of 1 milion)</th>
+      <th>Total Batches Execution Time </th>
       <th>Mean</th>
       <th>Standard Deviation</th>
       <th>Confidence Interval 5%</th>
