@@ -29,7 +29,8 @@ let resultHtmlTable = `
 		th,
 		td {
 			text-align: center;
-			padding: 10px;
+      padding: 10px;
+      font-size: 18px;
     }
     
     tr:nth-child(odd) {
@@ -52,11 +53,11 @@ let resultHtmlTable = `
 fs.writeFileSync('index.html', resultHtmlTable);
 
 const mean = (total, population) => {
-  return parseFloat(total / population).toFixed(20);
+  return parseFloat(total / population).toFixed(15);
 }
 
 const standardDeviation = (mean, population) => {
-  return parseFloat(Math.sqrt((mean**2)/population));
+  return parseFloat(Math.sqrt((mean**2)/population)).toFixed(15);
 }
 
 const confidenceInterval = (mean, population, standardDeviation, criticalValue) => {
