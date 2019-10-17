@@ -53,18 +53,18 @@ let resultHtmlTable = `
 fs.writeFileSync('index.html', resultHtmlTable);
 
 const mean = (total, population) => {
-  return parseFloat(total / population).toFixed(20);
+  return parseFloat(total / population).toFixed(4);
 }
 
 const standardDeviation = (mean, population) => {
-  return parseFloat(Math.sqrt((mean**2)/population)).toFixed(20);
+  return parseFloat(Math.sqrt((mean**2)/population)).toFixed(4);
 }
 
 const confidenceInterval = (mean, population, standardDeviation, criticalValue) => {
   let result = [];
   let critical = criticalValue * (standardDeviation/Math.sqrt(population));
-  result[0] = ((parseFloat(mean) - critical) * population).toFixed(7);
-  result[1] = ((parseFloat(mean) + critical) * population).toFixed(7);
+  result[0] = (parseFloat(mean) - critical).toFixed(4) + 'ms';
+  result[1] = (parseFloat(mean) + critical).toFixed(4) + 'ms';
 
   return result;
 }
@@ -251,10 +251,9 @@ const tan = () => {
 const benchmarkSummary = (functionToExecute, functionName) => {
     const totalTime = functionToExecute();
     const calculatedMean = mean(totalTime, batch);
-    const calculatedMeanOfMean = mean(calculatedMean, population);
-    const calculatedStandardDeviation = standardDeviation(calculatedMeanOfMean, population);
-    const calculatedConfidenceInterval1Percent = confidenceInterval(calculatedMeanOfMean, population, calculatedStandardDeviation, criticalT1Percent);
-    const calculatedConfidenceInterval5Percent = confidenceInterval(calculatedMeanOfMean, population, calculatedStandardDeviation, criticalT5Percent);
+    const calculatedStandardDeviation = standardDeviation(calculatedMean, batch);
+    const calculatedConfidenceInterval1Percent = confidenceInterval(calculatedMean, batch, calculatedStandardDeviation, criticalT1Percent);
+    const calculatedConfidenceInterval5Percent = confidenceInterval(calculatedMean, batch, calculatedStandardDeviation, criticalT5Percent);
     console.log('\n----------------------------------------------------------------------------------------');
     console.log("The total execution time of 20 loop of 1 milion \'%s\' operation batch was %dms", functionName, totalTime.toFixed(3));
     console.log("The mean of each batch is: %dms\nThe standard deviation of each batch is: %dms\nThe confidence interval with 1% is: ", calculatedMean, calculatedStandardDeviation, calculatedConfidenceInterval1Percent);
@@ -271,11 +270,11 @@ const benchmarkSummary = (functionToExecute, functionName) => {
       <th>Confidence Interval 1%</th>
     </tr>
     <tr>
-      <td>${totalTime.toFixed(7)}ms</td>
-      <td>${(calculatedMeanOfMean * population).toFixed(7)}ns</td>
-      <td>${(calculatedStandardDeviation * population).toFixed(7)}ns</td>
-      <td>[${calculatedConfidenceInterval1Percent[0]}ns, ${calculatedConfidenceInterval1Percent[1]}ns]</td>
-      <td>[${calculatedConfidenceInterval5Percent[0]}ns, ${calculatedConfidenceInterval5Percent[1]}ns]</td>
+      <td>${totalTime.toFixed(3)}ms</td>
+      <td>${calculatedMean}ms</td>
+      <td>${calculatedStandardDeviation}ms</td>
+      <td>[${calculatedConfidenceInterval1Percent[0]}, ${calculatedConfidenceInterval1Percent[1]}]</td>
+      <td>[${calculatedConfidenceInterval5Percent[0]}, ${calculatedConfidenceInterval5Percent[1]}]</td>
     </tr>
   </table><br/><br/><br/>`
 
