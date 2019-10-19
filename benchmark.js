@@ -1,5 +1,5 @@
 let accumulator = 0;
-const population = 50000000;
+const population = 10000000;
 const criticalT1Percent = 2.861;
 const criticalT5Percent = 2.093;
 const batch = 20;
@@ -202,7 +202,7 @@ const exp = () => {
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
     for(let j = 1; j <= population; j++){
-      accumulator = Math.exp(i);
+      accumulator = Math.exp(i+1);
     }
     const endTime = process.hrtime(startTime);
     totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
