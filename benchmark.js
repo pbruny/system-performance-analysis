@@ -4,6 +4,9 @@ const criticalT1Percent = 2.861;
 const criticalT5Percent = 2.093;
 const batch = 20;
 const fs = require('fs');
+const overhead = 0.29;
+nanosecond = 1000000;
+
 let resultHtmlTable = `
 <!DOCTYPE html>
 <html lang="en">
@@ -52,25 +55,45 @@ let resultHtmlTable = `
 `;
 fs.writeFileSync('index.html', resultHtmlTable);
 
-const mean = (total, population) => {
-  return parseFloat(total / population).toFixed(4);
+const mean = (values, population) => {
+  let mean = values.reduce((total, arr) => {
+    return total + arr;
+  })
+
+  return parseFloat(mean / population);
 }
 
-const standardDeviation = (mean, population) => {
-  return parseFloat(Math.sqrt((mean**2)/population)).toFixed(4);
+const summation = (values) => {
+  return values.reduce((total, arr) => {
+    return total + arr;
+  });
+}
+
+const variance = (values, mean) => {
+  let variance = 0;
+  let totalSum = 0
+  for(let i = 0; i < values.length; i++){
+    totalSum += ((values[i] - mean) ** 2);
+    variance = totalSum / (values.length - 1);
+  }
+  return variance;
+}
+
+const standardDeviation = (variance) => {
+  return parseFloat(Math.sqrt(variance));
 }
 
 const confidenceInterval = (mean, population, standardDeviation, criticalValue) => {
   let result = [];
   let critical = criticalValue * (standardDeviation/Math.sqrt(population));
-  result[0] = (parseFloat(mean) - critical).toFixed(4) + 'ms';
-  result[1] = (parseFloat(mean) + critical).toFixed(4) + 'ms';
+  result[0] = parseFloat((mean) - critical).toFixed(12);
+  result[1] = parseFloat((mean) + critical).toFixed(12);
 
   return result;
 }
 
 const sum = () => {
-  let totalExecutionTime = 0;
+  let totalExecutionTime = [];
 
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
@@ -78,14 +101,14 @@ const sum = () => {
       accumulator++;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime += (endTime[1] / 1000000);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
   }
 
   return totalExecutionTime;
 }
 
 const minus = () => {
-  let totalExecutionTime = 0;
+  let totalExecutionTime = [];
 
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
@@ -93,14 +116,14 @@ const minus = () => {
       accumulator--;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime += (endTime[1] / 1000000);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
   }
 
   return totalExecutionTime;
 }
 
 const multiply = () => {
-  let totalExecutionTime = 0;
+  let totalExecutionTime = [];
 
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
@@ -108,14 +131,14 @@ const multiply = () => {
       accumulator *= 2;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime += (endTime[1] / 1000000);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
   }
 
   return totalExecutionTime;
 }
 
 const division = () => {
-  let totalExecutionTime = 0;
+  let totalExecutionTime = [];
 
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
@@ -123,28 +146,28 @@ const division = () => {
       accumulator /= 2;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime += (endTime[1] / 1000000);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
   }
 
   return totalExecutionTime;
 }
 
 const mod = () => {
-  let totalExecutionTime = 0;
+  let totalExecutionTime = [];
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
     for(let j = 1; j <= population; j++){
       accumulator %= 2;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime += (endTime[1] / 1000000);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
   }
 
   return totalExecutionTime;
 }
 
 const and = () => {
-  let totalExecutionTime = 0;
+  let totalExecutionTime = [];
 
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
@@ -152,14 +175,14 @@ const and = () => {
       accumulator = i && j;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime += (endTime[1] / 1000000);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
   }
 
   return totalExecutionTime;
 }
 
 const or = () => {
-  let totalExecutionTime = 0;
+  let totalExecutionTime = [];
 
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
@@ -167,14 +190,14 @@ const or = () => {
       accumulator = i || j;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime += (endTime[1] / 1000000);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
   }
 
   return totalExecutionTime;
 }
 
 const exp = () => {
-  let totalExecutionTime = 0;
+  let totalExecutionTime = [];
 
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
@@ -182,14 +205,14 @@ const exp = () => {
       accumulator = Math.exp(i);
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime += (endTime[1] / 1000000);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
   }
 
   return totalExecutionTime;
 }
 
 const log = () => {
-  let totalExecutionTime = 0;
+  let totalExecutionTime = [];
 
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
@@ -197,14 +220,14 @@ const log = () => {
       accumulator = Math.log(i);
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime += (endTime[1] / 1000000);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
   }
 
   return totalExecutionTime;
 }
 
 const sin = () => {
-  let totalExecutionTime = 0;
+  let totalExecutionTime = [];
 
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
@@ -212,14 +235,14 @@ const sin = () => {
       accumulator = Math.sin(i);
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime += (endTime[1] / 1000000);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
   }
 
   return totalExecutionTime;
 }
 
 const cos = () => {
-  let totalExecutionTime = 0;
+  let totalExecutionTime = [];
 
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
@@ -227,14 +250,14 @@ const cos = () => {
       accumulator = Math.cos(i);
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime += (endTime[1] / 1000000);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
   }
 
   return totalExecutionTime;
 }
 
 const tan = () => {
-  let totalExecutionTime = 0;
+  let totalExecutionTime = [];
 
   for(let i = 1; i <= batch; i++){
     const startTime = process.hrtime();
@@ -242,7 +265,7 @@ const tan = () => {
       accumulator = Math.tan(i);
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime += (endTime[1] / 1000000);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
   }
 
   return totalExecutionTime;
@@ -250,12 +273,14 @@ const tan = () => {
 
 const benchmarkSummary = (functionToExecute, functionName) => {
     const totalTime = functionToExecute();
+    const testTotalTime = summation(totalTime);
     const calculatedMean = mean(totalTime, batch);
-    const calculatedStandardDeviation = standardDeviation(calculatedMean, batch);
+    const calculatedVariance = variance(totalTime, calculatedMean);
+    const calculatedStandardDeviation = standardDeviation(calculatedVariance);
     const calculatedConfidenceInterval1Percent = confidenceInterval(calculatedMean, batch, calculatedStandardDeviation, criticalT1Percent);
     const calculatedConfidenceInterval5Percent = confidenceInterval(calculatedMean, batch, calculatedStandardDeviation, criticalT5Percent);
     console.log('\n----------------------------------------------------------------------------------------');
-    console.log("The total execution time of 20 loop of 1 milion \'%s\' operation batch was %dms", functionName, totalTime.toFixed(3));
+    console.log("The total execution time of 20 loop of 1 milion \'%s\' operation batch was %dms", functionName, testTotalTime.toFixed(12));
     console.log("The mean of each batch is: %dms\nThe standard deviation of each batch is: %dms\nThe confidence interval with 1% is: ", calculatedMean, calculatedStandardDeviation, calculatedConfidenceInterval1Percent);
     console.log("\nThe confidence interval with 5% is: ", calculatedConfidenceInterval5Percent);
     console.log('----------------------------------------------------------------------------------------');
@@ -263,18 +288,18 @@ const benchmarkSummary = (functionToExecute, functionName) => {
     <h2>Result Benchmark for ' ${functionName} ' operation of each execution batch</h2>
     <table>
     <tr>
-      <th>Total Batches Execution Time </th>
-      <th>Mean</th>
+      <th>Average single operation summation</th>
+      <th>Single operation mean</th>
       <th>Standard Deviation</th>
       <th>Confidence Interval 5%</th>
       <th>Confidence Interval 1%</th>
     </tr>
     <tr>
-      <td>${totalTime.toFixed(3)}ms</td>
-      <td>${calculatedMean}ms</td>
-      <td>${calculatedStandardDeviation}ms</td>
-      <td>[${calculatedConfidenceInterval1Percent[0]}, ${calculatedConfidenceInterval1Percent[1]}]</td>
-      <td>[${calculatedConfidenceInterval5Percent[0]}, ${calculatedConfidenceInterval5Percent[1]}]</td>
+      <td>${(testTotalTime * nanosecond).toFixed(6)}ns</td>
+      <td>${(calculatedMean * nanosecond).toFixed(6)}ns</td>
+      <td>${(calculatedStandardDeviation * nanosecond).toFixed(6)}ns</td>
+      <td>[${parseFloat(calculatedConfidenceInterval1Percent[0] * nanosecond).toFixed(6)}ns, ${parseFloat(calculatedConfidenceInterval1Percent[1] * nanosecond).toFixed(6)}ns]</td>
+      <td>[${parseFloat(calculatedConfidenceInterval5Percent[0] * nanosecond).toFixed(6)}ns, ${parseFloat(calculatedConfidenceInterval5Percent[1] * nanosecond).toFixed(6)}ns]</td>
     </tr>
   </table><br/><br/><br/>`
 
