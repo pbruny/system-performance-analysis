@@ -1,5 +1,5 @@
 let accumulator = 0;
-const population = 1000000;
+const population = 50000000;
 const criticalT1Percent = 2.861;
 const criticalT5Percent = 2.093;
 const batch = 20;
@@ -101,7 +101,7 @@ const sum = () => {
       accumulator++;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
   }
 
   return totalExecutionTime;
@@ -116,7 +116,7 @@ const minus = () => {
       accumulator--;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
   }
 
   return totalExecutionTime;
@@ -131,7 +131,7 @@ const multiply = () => {
       accumulator *= 2;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
   }
 
   return totalExecutionTime;
@@ -146,7 +146,7 @@ const division = () => {
       accumulator /= 2;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
   }
 
   return totalExecutionTime;
@@ -160,7 +160,7 @@ const mod = () => {
       accumulator %= 2;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
   }
 
   return totalExecutionTime;
@@ -175,7 +175,7 @@ const and = () => {
       accumulator = i && j;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
   }
 
   return totalExecutionTime;
@@ -190,7 +190,7 @@ const or = () => {
       accumulator = i || j;
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
   }
 
   return totalExecutionTime;
@@ -205,7 +205,7 @@ const exp = () => {
       accumulator = Math.exp(i);
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
   }
 
   return totalExecutionTime;
@@ -220,7 +220,7 @@ const log = () => {
       accumulator = Math.log(i);
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
   }
 
   return totalExecutionTime;
@@ -235,7 +235,7 @@ const sin = () => {
       accumulator = Math.sin(i);
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
   }
 
   return totalExecutionTime;
@@ -250,7 +250,7 @@ const cos = () => {
       accumulator = Math.cos(i);
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
   }
 
   return totalExecutionTime;
@@ -265,7 +265,7 @@ const tan = () => {
       accumulator = Math.tan(i);
     }
     const endTime = process.hrtime(startTime);
-    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / nanosecond);
+    totalExecutionTime.push(((endTime[1] / 1000000) - overhead) / population);
   }
 
   return totalExecutionTime;
@@ -280,8 +280,8 @@ const benchmarkSummary = (functionToExecute, functionName) => {
     const calculatedConfidenceInterval1Percent = confidenceInterval(calculatedMean, batch, calculatedStandardDeviation, criticalT1Percent);
     const calculatedConfidenceInterval5Percent = confidenceInterval(calculatedMean, batch, calculatedStandardDeviation, criticalT5Percent);
     console.log('\n----------------------------------------------------------------------------------------');
-    console.log("The total execution time of 20 loop of 1 milion \'%s\' operation batch was %dms", functionName, testTotalTime.toFixed(12));
-    console.log("The mean of each batch is: %dms\nThe standard deviation of each batch is: %dms\nThe confidence interval with 1% is: ", calculatedMean, calculatedStandardDeviation, calculatedConfidenceInterval1Percent);
+    console.log("Average single operation summation of \'%s\' operation: %dms", functionName, testTotalTime.toFixed(12));
+    console.log("The mean of each operation is: %dms\nThe standard deviation is: %dms\nThe confidence interval with 1% is: ", calculatedMean, calculatedStandardDeviation, calculatedConfidenceInterval1Percent);
     console.log("\nThe confidence interval with 5% is: ", calculatedConfidenceInterval5Percent);
     console.log('----------------------------------------------------------------------------------------');
     const logResult = `
@@ -369,3 +369,21 @@ const benchmark = () => {
 }
 
 benchmark();
+
+const debug = () => {
+  let total = sum();
+let testMean = mean(total, 20);
+let testSummation = summation(total);
+let testVariance = variance(total, testMean);
+let testStandard = standardDeviation(testVariance);
+let testConfidence = confidenceInterval(testMean, 20, testStandard, criticalT5Percent);
+
+console.log(total);
+console.log("media: " + testMean);
+console.log("somatorio: " + testSummation);
+console.log("teste de media: " + testSummation/20);
+console.log("variancia: " + testVariance);
+console.log("desvio: " + testStandard);
+console.log("intervalo: " + testConfidence);
+
+}
